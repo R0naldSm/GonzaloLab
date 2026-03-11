@@ -330,45 +330,6 @@ class Database {
     }
 }
 
-// ============================================
-// EJEMPLO DE USO EN MODELOS
-// ============================================
-
-class Usuario {
-    private $db;
-    
-    public function __construct() {
-        $this->db = Database::getInstance();
-    }
-    
-    // Ejemplo con prepared statements
-    public function findByUsername($username) {
-        $sql = "SELECT * FROM usuarios WHERE username = ? AND eliminado = 0";
-        return $this->db->queryOne($sql, [$username]);
-    }
-    
-    // Ejemplo con procedimiento almacenado
-    public function crear($datos) {
-        $security = Security::getInstance();
-        
-        $sql = "CALL sp_crear_usuario(?, ?, ?, ?, ?, ?, ?, ?, @resultado, @mensaje)";
-        $params = [
-            $datos['username'],
-            $datos['email'],
-            $security->hashPassword($datos['password']),
-            $datos['nombre_completo'],
-            $datos['cedula'],
-            $datos['rol'],
-            $_SESSION['user_id'],
-            $security->getMySQLEncryptionKey()
-        ];
-        
-        $this->db->callProcedure('sp_crear_usuario', $params);
-        
-        // Obtener OUT params
-        $resultado = $this->db->query("SELECT @resultado as id, @mensaje as mensaje");
-        return $resultado[0];
-    }
-}
+// Nota: La clase Usuario real se encuentra en app/models/usuario.php
 
 ?>

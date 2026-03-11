@@ -5,6 +5,7 @@
 // ============================================
 
 require_once __DIR__ . '/../../core/Security.php';
+require_once __DIR__ . '/../../core/RBAC.php';
 require_once __DIR__ . '/../models/Usuario.php';
 
 class AuthController {
@@ -275,10 +276,13 @@ class AuthController {
                 header('Location: /dashboard');
                 break;
             case ROL_ANALISTA:
-                header('Location: /ordenes');
+                header('Location: /dashboard');
                 break;
             case ROL_MEDICO:
-                header('Location: /consulta-resultados');
+                header('Location: /medico/resultados');
+                break;
+            case ROL_PACIENTE:
+                header('Location: /portal/resultados');
                 break;
             default:
                 header('Location: /dashboard');
